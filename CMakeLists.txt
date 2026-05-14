@@ -31,9 +31,27 @@ set_target_properties(hid PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>"
 )
 
-if (EXISTS "${CMAKE_SOURCE_DIR}/libMinHook-x64.lib")
+set(MINHOOK_LIB "")
+set(MINHOOK_CANDIDATES
+    "${CMAKE_SOURCE_DIR}/libMinHook-x64.lib"
+    "${CMAKE_SOURCE_DIR}/libMinHook.x64.lib"
+    "${CMAKE_SOURCE_DIR}/MinHook.x64.lib"
+    "${CMAKE_SOURCE_DIR}/libMinHook.lib"
+)
+
+foreach(candidate IN LISTS MINHOOK_CANDIDATES)
+    if (EXISTS "${candidate}")
+        set(MINHOOK_LIB "${candidate}")
+        break()
+    endif()
+endforeach()
+
+if (NOT MINHOOK_LIB STREQUAL "")
+    message(STATUS "Using MinHook library: ${MINHOOK_LIB}")
     target_compile_definitions(hid PRIVATE HAVE_MINHOOK=1)
-    target_link_libraries(hid PRIVATE "${CMAKE_SOURCE_DIR}/libMinHook-x64.lib")
+    target_link_libraries(hid PRIVATE "${MINHOOK_LIB}")
+else()
+    message(WARNING "MinHook library not found in project root. Hook installation will be disabled at runtime.")
 endif()
 
 add_executable(injector
