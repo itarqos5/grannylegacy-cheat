@@ -3,6 +3,7 @@
 #include <tlhelp32.h>
 
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -10,6 +11,13 @@ namespace
 {
     constexpr const char* kProcessName = "Granny Legacy.exe";
     constexpr const char* kDllName = "hid.dll";
+
+    struct ModuleInfo
+    {
+        bool loaded = false;
+        HMODULE baseAddress = nullptr;
+        std::filesystem::path imagePath;
+    };
 
     void PrintErrorRed(const std::string& message)
     {
@@ -49,32 +57,91 @@ namespace
         return pid;
     }
 
-    bool IsModuleLoaded(DWORD pid, const std::string& moduleName)
+    ModuleInfo GetModuleInfo(DWORD pid, const std::string& moduleName)
     {
+        ModuleInfo result;
         MODULEENTRY32 moduleEntry{};
         moduleEntry.dwSize = sizeof(moduleEntry);
 
         HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, pid);
         if (snapshot == INVALID_HANDLE_VALUE)
         {
-            return false;
+            return result;
         }
 
-        bool found = false;
         if (Module32First(snapshot, &moduleEntry))
         {
             do
             {
                 if (_stricmp(moduleEntry.szModule, moduleName.c_str()) == 0)
                 {
-                    found = true;
+                    result.loaded = true;
+                    result.baseAddress = moduleEntry.hModule;
+                    result.imagePath = moduleEntry.szExePath;
                     break;
                 }
             } while (Module32Next(snapshot, &moduleEntry));
         }
 
         CloseHandle(snapshot);
-        return found;
+        return result;
+    }
+
+    bool FilesMatch(const std::filesystem::path& left, const std::filesystem::path& right)
+    {
+        std::error_code ec;
+        if (!std::filesystem::exists(left, ec) || !std::filesystem::exists(right, ec))
+        {
+            return false;
+        }
+
+        const auto leftSize = std::filesystem::file_size(left, ec);
+        if (ec)
+        {
+            return false;
+        }
+
+        const auto rightSize = std::filesystem::file_size(right, ec);
+        if (ec || leftSize != rightSize)
+        {
+            return false;
+        }
+
+        std::ifstream lhs(left, std::ios::binary);
+        std::ifstream rhs(right, std::ios::binary);
+        if (!lhs.is_open() || !rhs.is_open())
+        {
+            return false;
+        }
+
+        constexpr std::size_t kChunk = 4096;
+        char leftBuffer[kChunk];
+        char rightBuffer[kChunk];
+
+        while (lhs && rhs)
+        {
+            lhs.read(leftBuffer, static_cast<std::streamsize>(kChunk));
+            rhs.read(rightBuffer, static_cast<std::streamsize>(kChunk));
+
+            const auto leftRead = lhs.gcount();
+            const auto rightRead = rhs.gcount();
+            if (leftRead != rightRead)
+            {
+                return false;
+            }
+
+            if (leftRead <= 0)
+            {
+                break;
+            }
+
+            if (memcmp(leftBuffer, rightBuffer, static_cast<std::size_t>(leftRead)) != 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     std::filesystem::path GetProcessExePath(DWORD pid)
@@ -141,7 +208,7 @@ namespace
             return false;
         }
 
-        if (!std::filesystem::exists(targetDll))
+        if (!std::filesystem::exists(targetDll) || !FilesMatch(sourceDll, targetDll))
         {
             std::error_code ec;
             std::filesystem::copy_file(sourceDll, targetDll, std::filesystem::copy_options::overwrite_existing, ec);
@@ -206,6 +273,69 @@ namespace
         CloseHandle(process);
         return true;
     }
+
+    bool UnloadRemoteModule(DWORD pid, HMODULE moduleHandle)
+    {
+        HANDLE process = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION, FALSE, pid);
+        if (!process)
+        {
+            PrintErrorRed("Unable to open process to unload existing hid.dll");
+            return false;
+        }
+
+        FARPROC freeLibrary = GetProcAddress(GetModuleHandleA("kernel32.dll"), "FreeLibrary");
+        if (!freeLibrary)
+        {
+            CloseHandle(process);
+            PrintErrorRed("Failed to resolve FreeLibrary");
+            return false;
+        }
+
+        HANDLE remoteThread = CreateRemoteThread(
+            process,
+            nullptr,
+            0,
+            reinterpret_cast<LPTHREAD_START_ROUTINE>(freeLibrary),
+            moduleHandle,
+            0,
+            nullptr
+        );
+        if (!remoteThread)
+        {
+            CloseHandle(process);
+            PrintErrorRed("CreateRemoteThread failed while unloading hid.dll");
+            return false;
+        }
+
+        WaitForSingleObject(remoteThread, 5000);
+
+        DWORD exitCode = 0;
+        GetExitCodeThread(remoteThread, &exitCode);
+        CloseHandle(remoteThread);
+        CloseHandle(process);
+
+        return exitCode != 0;
+    }
+
+    bool ReplaceFileWithLocal(const std::filesystem::path& targetDll)
+    {
+        const auto sourceDll = std::filesystem::current_path() / kDllName;
+        if (!std::filesystem::exists(sourceDll))
+        {
+            PrintErrorRed("hid.dll is missing next to injector.exe");
+            return false;
+        }
+
+        std::error_code ec;
+        std::filesystem::copy_file(sourceDll, targetDll, std::filesystem::copy_options::overwrite_existing, ec);
+        if (ec)
+        {
+            PrintErrorRed("Failed to replace existing hid.dll with local version");
+            return false;
+        }
+
+        return true;
+    }
 }
 
 int main()
@@ -253,20 +383,57 @@ int main()
 
     const auto gameDir = exePath.parent_path();
     const auto dllPath = gameDir / kDllName;
+    const auto localDll = std::filesystem::current_path() / kDllName;
 
-    if (!EnsureDllInGameDirectory(gameDir))
+    ModuleInfo loadedModule = GetModuleInfo(pid, kDllName);
+    if (loadedModule.loaded)
     {
-        std::cout << "Press any key to exit . . .\n";
-        std::cin.get();
-        return 1;
+        const auto loadedPath = loadedModule.imagePath.empty() ? dllPath : loadedModule.imagePath;
+        if (FilesMatch(localDll, loadedPath))
+        {
+            std::cout << "hid.dll is already loaded and matches local build.\n";
+            std::cout << "Press any key to exit . . .\n";
+            std::cin.get();
+            return 0;
+        }
+
+        std::cout << "Detected mismatched injected hid.dll. Replacing with local build..\n";
+        if (!UnloadRemoteModule(pid, loadedModule.baseAddress))
+        {
+            PrintErrorRed("Failed to unload mismatched hid.dll from process");
+            std::cout << "Press any key to exit . . .\n";
+            std::cin.get();
+            return 1;
+        }
+
+        if (!ReplaceFileWithLocal(loadedPath))
+        {
+            std::cout << "Press any key to exit . . .\n";
+            std::cin.get();
+            return 1;
+        }
+
+        // Keep the game root copy aligned even when the loaded module path differs.
+        if (loadedPath != dllPath)
+        {
+            if (!ReplaceFileWithLocal(dllPath))
+            {
+                std::cout << "Press any key to exit . . .\n";
+                std::cin.get();
+                return 1;
+            }
+        }
+
+        Sleep(300);
     }
-
-    if (IsModuleLoaded(pid, kDllName))
+    else
     {
-        std::cout << "hid.dll is already loaded.\n";
-        std::cout << "Press any key to exit . . .\n";
-        std::cin.get();
-        return 0;
+        if (!EnsureDllInGameDirectory(gameDir))
+        {
+            std::cout << "Press any key to exit . . .\n";
+            std::cin.get();
+            return 1;
+        }
     }
 
     if (!InjectDll(pid, dllPath))

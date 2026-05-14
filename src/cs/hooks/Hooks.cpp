@@ -91,9 +91,10 @@ bool hooks::Install()
         Sleep(250);
     }
 
-    if (MH_Initialize() != MH_OK)
+    const MH_STATUS initStatus = MH_Initialize();
+    if (initStatus != MH_OK)
     {
-        logger::Write("MH_Initialize failed");
+        logger::Write(std::string("MH_Initialize failed with status: ") + std::to_string(static_cast<int>(initStatus)));
         return false;
     }
 
