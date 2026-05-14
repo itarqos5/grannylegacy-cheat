@@ -53,40 +53,7 @@
 // ---------------------------------------------------------------------------
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <fstream>
-#include <string>
-
-// ---------------------------------------------------------------------------
-// Worker thread: waits 5 seconds then writes a log entry
-// ---------------------------------------------------------------------------
-static DWORD WINAPI LogThread(LPVOID /*lpParam*/)
-{
-    Sleep(5000);
-
-    // Resolve the log file path next to the DLL so it works from any game dir.
-    char modulePath[MAX_PATH] = {};
-    GetModuleFileNameA(
-        GetModuleHandleA("hid.dll"),
-        modulePath,
-        MAX_PATH
-    );
-
-    // Replace the filename portion with "proxy_log.txt"
-    std::string logPath(modulePath);
-    const auto lastSlash = logPath.find_last_of("\\/");
-    if (lastSlash != std::string::npos)
-        logPath = logPath.substr(0, lastSlash + 1);
-    logPath += "proxy_log.txt";
-
-    std::ofstream ofs(logPath, std::ios::app);
-    if (ofs.is_open())
-    {
-        ofs << "Proxy Loaded\n";
-        ofs.close();
-    }
-
-    return 0;
-}
+#include "core/Bootstrap.h"
 
 // ---------------------------------------------------------------------------
 // DllMain
@@ -96,7 +63,11 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID /*lpRese
     if (ul_reason_for_call == DLL_PROCESS_ATTACH)
     {
         DisableThreadLibraryCalls(hModule);
-        CloseHandle(CreateThread(nullptr, 0, LogThread, nullptr, 0, nullptr));
+        HANDLE worker = CreateThread(nullptr, 0, bootstrap::RuntimeThread, nullptr, 0, nullptr);
+        if (worker)
+        {
+            CloseHandle(worker);
+        }
     }
     return TRUE;
 }

@@ -1,0 +1,10 @@
+build/
+dist/
+proxy_log.txt
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.exe
