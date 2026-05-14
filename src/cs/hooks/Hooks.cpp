@@ -18,6 +18,9 @@ namespace
     MainMenuUpdateFn g_originalMainMenuUpdate = nullptr;
     AIGrannyFixedUpdateFn g_originalAIGrannyFixedUpdate = nullptr;
     AIGrannyFrozenEnemyFn g_originalAIGrannyFrozenEnemy = nullptr;
+    bool g_loggedMainMenuEntry = false;
+    bool g_loggedAIEntry = false;
+    bool g_lastFreezeState = false;
 
     std::uintptr_t ResolveAbsolute(std::uintptr_t relativeRva)
     {
@@ -29,31 +32,93 @@ namespace
         return reinterpret_cast<std::uintptr_t>(gameAssembly) + relativeRva;
     }
 
+    bool GuardedMainMenuCall(void* self)
+    {
+        __try
+        {
+            menu::TickToggleInput();
+            menu::DrawOverlay();
+
+            if (g_originalMainMenuUpdate)
+            {
+                g_originalMainMenuUpdate(self);
+            }
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+    }
+
+    bool GuardedAIGrannyFixedUpdateCall(void* self)
+    {
+        __try
+        {
+            if (feature::freeze::IsEnabled())
+            {
+                if (g_originalAIGrannyFrozenEnemy)
+                {
+                    g_originalAIGrannyFrozenEnemy(self);
+                }
+                return true;
+            }
+
+            if (g_originalAIGrannyFixedUpdate)
+            {
+                g_originalAIGrannyFixedUpdate(self);
+            }
+
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+    }
+
     void __fastcall hkMainMenuUpdate(void* self)
     {
-        menu::TickToggleInput();
-        menu::DrawOverlay();
-
-        if (g_originalMainMenuUpdate)
+        if (!g_loggedMainMenuEntry)
         {
-            g_originalMainMenuUpdate(self);
+            logger::Info("hkMainMenuUpdate entered for the first time");
+            g_loggedMainMenuEntry = true;
+        }
+
+        if (!GuardedMainMenuCall(self))
+        {
+            logger::Error("Exception inside hkMainMenuUpdate; original call skipped for this frame");
         }
     }
 
     void __fastcall hkAIGrannyFixedUpdate(void* self)
     {
-        if (feature::freeze::IsEnabled())
+        if (!g_loggedAIEntry)
         {
-            if (g_originalAIGrannyFrozenEnemy)
-            {
-                g_originalAIGrannyFrozenEnemy(self);
-            }
-            return;
+            logger::Info("hkAIGrannyFixedUpdate entered for the first time");
+            g_loggedAIEntry = true;
         }
 
-        if (g_originalAIGrannyFixedUpdate)
+        const bool freezeEnabled = feature::freeze::IsEnabled();
+        if (freezeEnabled != g_lastFreezeState)
         {
-            g_originalAIGrannyFixedUpdate(self);
+            logger::Info(std::string("Freeze Granny state changed: ") + (freezeEnabled ? "ENABLED" : "DISABLED"));
+            g_lastFreezeState = freezeEnabled;
+        }
+
+        if (freezeEnabled && !g_originalAIGrannyFrozenEnemy)
+        {
+            logger::Warn("Freeze enabled but AI_Granny.FrozenEnemy pointer is null");
+        }
+
+        if (!freezeEnabled && !g_originalAIGrannyFixedUpdate)
+        {
+            logger::Warn("Original AI_Granny.FixedUpdate pointer is null");
+        }
+
+        if (!GuardedAIGrannyFixedUpdateCall(self))
+        {
+            logger::Error("Exception inside hkAIGrannyFixedUpdate");
         }
     }
 
@@ -68,39 +133,46 @@ namespace
         MH_STATUS status = MH_CreateHook(reinterpret_cast<void*>(absoluteTarget), detour, reinterpret_cast<void**>(original));
         if (status != MH_OK)
         {
-            logger::Write(std::string("MH_CreateHook failed for ") + name);
+            logger::Error(std::string("MH_CreateHook failed for ") + name + " status=" + std::to_string(static_cast<int>(status)));
             return false;
         }
 
         status = MH_EnableHook(reinterpret_cast<void*>(absoluteTarget));
         if (status != MH_OK)
         {
-            logger::Write(std::string("MH_EnableHook failed for ") + name);
+            logger::Error(std::string("MH_EnableHook failed for ") + name + " status=" + std::to_string(static_cast<int>(status)));
             return false;
         }
 
-        logger::Write(std::string("Hook enabled: ") + name);
+        logger::Info(std::string("Hook enabled: ") + name);
         return true;
     }
 }
 
 bool hooks::Install()
 {
+    logger::Info("Waiting for GameAssembly.dll and UnityPlayer.dll");
     while (!GetModuleHandleA("GameAssembly.dll") || !GetModuleHandleA("UnityPlayer.dll"))
     {
         Sleep(250);
     }
+    logger::Info("Required modules detected");
 
     const MH_STATUS initStatus = MH_Initialize();
     if (initStatus != MH_OK)
     {
-        logger::Write(std::string("MH_Initialize failed with status: ") + std::to_string(static_cast<int>(initStatus)));
+        logger::Error(std::string("MH_Initialize failed with status: ") + std::to_string(static_cast<int>(initStatus)));
         return false;
     }
+    logger::Info("MH_Initialize succeeded");
 
     const std::uintptr_t mainMenuUpdate = ResolveAbsolute(rva::MainMenuUpdate);
     const std::uintptr_t aiGrannyFixedUpdate = ResolveAbsolute(rva::AIGrannyFixedUpdate);
     const std::uintptr_t aiGrannyFrozenEnemy = ResolveAbsolute(rva::AIGrannyFrozenEnemy);
+
+    logger::Info(std::string("Resolved MainMenu.Update address: 0x") + std::to_string(mainMenuUpdate));
+    logger::Info(std::string("Resolved AI_Granny.FixedUpdate address: 0x") + std::to_string(aiGrannyFixedUpdate));
+    logger::Info(std::string("Resolved AI_Granny.FrozenEnemy address: 0x") + std::to_string(aiGrannyFrozenEnemy));
 
     g_originalAIGrannyFrozenEnemy = reinterpret_cast<AIGrannyFrozenEnemyFn>(aiGrannyFrozenEnemy);
 
@@ -113,5 +185,6 @@ bool hooks::Install()
 
 void hooks::Shutdown()
 {
+    logger::Warn("Shutting down hooks");
     MH_Uninitialize();
 }

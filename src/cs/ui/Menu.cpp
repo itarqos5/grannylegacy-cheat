@@ -26,10 +26,19 @@ namespace
 
     bool g_showMenu = true;
     bool g_minimized = false;
+    bool g_loggedGuiResolve = false;
+    bool g_lastLoggedMinimized = false;
+    bool g_disableGuiAfterException = false;
+    bool g_loggedMissingStringNew = false;
     void* NewUnityString(const char* text)
     {
         if (!g_il2cppStringNew)
         {
+            if (!g_loggedMissingStringNew)
+            {
+                logger::Warn("il2cpp_string_new is unresolved");
+                g_loggedMissingStringNew = true;
+            }
             return nullptr;
         }
         return g_il2cppStringNew(text);
@@ -67,10 +76,16 @@ namespace
 
     void EnsureUnityGuiFunctions()
     {
+        if (g_disableGuiAfterException)
+        {
+            return;
+        }
+
         HMODULE gameAssembly = GetModuleHandleA("GameAssembly.dll");
         HMODULE unityPlayer = GetModuleHandleA("UnityPlayer.dll");
         if (!gameAssembly)
         {
+            logger::Warn("GameAssembly.dll not loaded while resolving GUI functions");
             return;
         }
 
@@ -91,6 +106,15 @@ namespace
         // Export fallback keeps the request contract: icall first, then exports.
         ResolveExport(g_guiBox, unityPlayer, "Unity_GUI_Box");
         ResolveExport(g_guiLabel, unityPlayer, "Unity_GUI_Label");
+
+        if (!g_loggedGuiResolve)
+        {
+            logger::Info(std::string("GUI resolve status box=") + (g_guiBox ? "yes" : "no") +
+                " label=" + (g_guiLabel ? "yes" : "no") +
+                " button=" + (g_guiButton ? "yes" : "no") +
+                " bgColor=" + (g_setBackgroundColor ? "yes" : "no"));
+            g_loggedGuiResolve = true;
+        }
     }
 
     void DrawExpandedMenu()
@@ -117,12 +141,14 @@ namespace
         if (g_guiButton(minButton, NewUnityString("-")))
         {
             g_minimized = true;
+            logger::Info("UI minimize button pressed");
         }
 
         g_guiLabel(freezeLabel, NewUnityString("Freeze Granny"));
         if (g_guiButton(freezeToggle, NewUnityString(feature::freeze::IsEnabled() ? "ON" : "OFF")))
         {
             feature::freeze::Toggle();
+            logger::Info(std::string("UI Freeze Granny toggled to ") + (feature::freeze::IsEnabled() ? "ON" : "OFF"));
         }
     }
 
@@ -148,6 +174,28 @@ namespace
         if (g_guiButton(plusButton, NewUnityString("+")))
         {
             g_minimized = false;
+            logger::Info("UI restore button pressed");
+        }
+    }
+
+    bool GuardedDrawOverlay()
+    {
+        __try
+        {
+            EnsureUnityGuiFunctions();
+            if (g_minimized)
+            {
+                DrawMinimizedMenu();
+            }
+            else
+            {
+                DrawExpandedMenu();
+            }
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
         }
     }
 }
@@ -159,24 +207,34 @@ namespace menu
         if ((GetAsyncKeyState(VK_INSERT) & 1) != 0)
         {
             g_minimized = !g_minimized;
+            logger::Info(std::string("INSERT toggle changed minimized state to ") + (g_minimized ? "true" : "false"));
         }
     }
 
     void DrawOverlay()
     {
+        if (g_disableGuiAfterException)
+        {
+            return;
+        }
+
         if (!g_showMenu)
         {
             return;
         }
 
-        EnsureUnityGuiFunctions();
-        if (g_minimized)
+        if (!GuardedDrawOverlay())
         {
-            DrawMinimizedMenu();
+            logger::Error("Exception while drawing Unity GUI; disabling GUI drawing to prevent crash");
+            g_disableGuiAfterException = true;
             return;
         }
 
-        DrawExpandedMenu();
+        if (g_lastLoggedMinimized != g_minimized)
+        {
+            logger::Info(std::string("Menu minimized state changed: ") + (g_minimized ? "true" : "false"));
+            g_lastLoggedMinimized = g_minimized;
+        }
     }
 
     bool IsFreezeEnabled()

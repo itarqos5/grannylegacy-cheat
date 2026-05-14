@@ -336,6 +336,23 @@ namespace
 
         return true;
     }
+
+    void WaitForGameExitWithDelay(DWORD pid)
+    {
+        HANDLE process = OpenProcess(SYNCHRONIZE, FALSE, pid);
+        if (!process)
+        {
+            std::cout << "Could not open process for exit monitor; continuing.\n";
+            return;
+        }
+
+        std::cout << "Monitoring game process. Terminal will close 5 seconds after game exits.\n";
+        WaitForSingleObject(process, INFINITE);
+        CloseHandle(process);
+
+        std::cout << "Game process exited. Waiting 5 seconds before closing terminal..\n";
+        Sleep(5000);
+    }
 }
 
 int main()
@@ -392,8 +409,7 @@ int main()
         if (FilesMatch(localDll, loadedPath))
         {
             std::cout << "hid.dll is already loaded and matches local build.\n";
-            std::cout << "Press any key to exit . . .\n";
-            std::cin.get();
+            WaitForGameExitWithDelay(pid);
             return 0;
         }
 
@@ -406,22 +422,11 @@ int main()
             return 1;
         }
 
-        if (!ReplaceFileWithLocal(loadedPath))
+        if (!ReplaceFileWithLocal(dllPath))
         {
             std::cout << "Press any key to exit . . .\n";
             std::cin.get();
             return 1;
-        }
-
-        // Keep the game root copy aligned even when the loaded module path differs.
-        if (loadedPath != dllPath)
-        {
-            if (!ReplaceFileWithLocal(dllPath))
-            {
-                std::cout << "Press any key to exit . . .\n";
-                std::cin.get();
-                return 1;
-            }
         }
 
         Sleep(300);
@@ -444,7 +449,6 @@ int main()
     }
 
     std::cout << "Injection complete.\n";
-    std::cout << "Press any key to exit . . .\n";
-    std::cin.get();
+    WaitForGameExitWithDelay(pid);
     return 0;
 }

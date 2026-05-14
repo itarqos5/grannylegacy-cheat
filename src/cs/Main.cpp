@@ -54,6 +54,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "core/Bootstrap.h"
+#include "util/Logger.h"
 
 // ---------------------------------------------------------------------------
 // DllMain
@@ -68,6 +69,11 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID /*lpRese
         {
             CloseHandle(worker);
         }
+    }
+    else if (ul_reason_for_call == DLL_PROCESS_DETACH)
+    {
+        logger::Warn("DLL process detach received");
+        logger::Shutdown();
     }
     return TRUE;
 }
