@@ -11,6 +11,7 @@ namespace
 {
     constexpr const char* kProcessName = "Granny Legacy.exe";
     constexpr const char* kDllName = "hid.dll";
+    constexpr const char* kResourcesDirName = "resources";
 
     struct ModuleInfo
     {
@@ -222,6 +223,54 @@ namespace
         return true;
     }
 
+    bool EnsureResourcesInGameDirectory(const std::filesystem::path& gameDir)
+    {
+        const auto sourceResources = std::filesystem::current_path() / kResourcesDirName;
+        const auto targetResources = gameDir / kResourcesDirName;
+
+        if (!std::filesystem::exists(sourceResources) || !std::filesystem::is_directory(sourceResources))
+        {
+            std::cout << "WARN: resources folder not found next to injector; skipping resource copy.\n";
+            return true;
+        }
+
+        std::error_code ec;
+        std::filesystem::create_directories(targetResources, ec);
+        if (ec)
+        {
+            PrintErrorRed("Failed to create game resources directory");
+            return false;
+        }
+
+        for (const auto& entry : std::filesystem::recursive_directory_iterator(sourceResources))
+        {
+            const auto rel = std::filesystem::relative(entry.path(), sourceResources, ec);
+            if (ec)
+            {
+                ec.clear();
+                continue;
+            }
+
+            const auto target = targetResources / rel;
+            if (entry.is_directory())
+            {
+                std::filesystem::create_directories(target, ec);
+                continue;
+            }
+
+            std::filesystem::create_directories(target.parent_path(), ec);
+            std::filesystem::copy_file(entry.path(), target, std::filesystem::copy_options::overwrite_existing, ec);
+            if (ec)
+            {
+                PrintErrorRed(std::string("Failed to copy resource file: ") + entry.path().string());
+                return false;
+            }
+        }
+
+        std::cout << "Resources synchronized to game directory.\n";
+        return true;
+    }
+
     bool InjectDll(DWORD pid, const std::filesystem::path& dllPath)
     {
         HANDLE process = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, FALSE, pid);
@@ -317,6 +366,20 @@ namespace
         return exitCode != 0;
     }
 
+    bool UnloadModuleWithRetries(DWORD pid, HMODULE moduleHandle)
+    {
+        for (int attempt = 1; attempt <= 5; ++attempt)
+        {
+            if (UnloadRemoteModule(pid, moduleHandle))
+            {
+                return true;
+            }
+            std::cout << "WARN: unload attempt " << attempt << " failed, retrying..\n";
+            Sleep(400);
+        }
+        return false;
+    }
+
     bool ReplaceFileWithLocal(const std::filesystem::path& targetDll)
     {
         const auto sourceDll = std::filesystem::current_path() / kDllName;
@@ -402,6 +465,13 @@ int main()
     const auto dllPath = gameDir / kDllName;
     const auto localDll = std::filesystem::current_path() / kDllName;
 
+    if (!EnsureResourcesInGameDirectory(gameDir))
+    {
+        std::cout << "Press any key to exit . . .\n";
+        std::cin.get();
+        return 1;
+    }
+
     ModuleInfo loadedModule = GetModuleInfo(pid, kDllName);
     if (loadedModule.loaded)
     {
@@ -414,7 +484,7 @@ int main()
         }
 
         std::cout << "Detected mismatched injected hid.dll. Replacing with local build..\n";
-        if (!UnloadRemoteModule(pid, loadedModule.baseAddress))
+        if (!UnloadModuleWithRetries(pid, loadedModule.baseAddress))
         {
             PrintErrorRed("Failed to unload mismatched hid.dll from process");
             std::cout << "Press any key to exit . . .\n";
@@ -430,6 +500,15 @@ int main()
         }
 
         Sleep(300);
+
+        // Verify module is no longer loaded before re-injecting.
+        if (GetModuleInfo(pid, kDllName).loaded)
+        {
+            PrintErrorRed("hid.dll still appears loaded after unload attempts");
+            std::cout << "Press any key to exit . . .\n";
+            std::cin.get();
+            return 1;
+        }
     }
     else
     {

@@ -7,6 +7,7 @@
 #include "../util/Logger.h"
 
 #include <windows.h>
+#include <sstream>
 #include <string>
 
 namespace
@@ -36,13 +37,24 @@ namespace
     {
         __try
         {
-            menu::TickToggleInput();
-            menu::DrawOverlay();
-
             if (g_originalMainMenuUpdate)
             {
                 g_originalMainMenuUpdate(self);
             }
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+    }
+
+    bool GuardedMenuDraw()
+    {
+        __try
+        {
+            menu::TickToggleInput();
+            menu::DrawOverlay();
             return true;
         }
         __except (EXCEPTION_EXECUTE_HANDLER)
@@ -85,9 +97,14 @@ namespace
             g_loggedMainMenuEntry = true;
         }
 
+        if (!GuardedMenuDraw())
+        {
+            logger::Error("Exception while drawing menu in hkMainMenuUpdate");
+        }
+
         if (!GuardedMainMenuCall(self))
         {
-            logger::Error("Exception inside hkMainMenuUpdate; original call skipped for this frame");
+            logger::Error("Exception in original MainMenu.Update");
         }
     }
 
@@ -158,6 +175,11 @@ bool hooks::Install()
     }
     logger::Info("Required modules detected");
 
+#ifndef HAVE_MINHOOK
+    logger::Error("Real MinHook backend is missing (libMinHook-x64.lib not found). Hooks are disabled to prevent crashes.");
+    return false;
+#endif
+
     const MH_STATUS initStatus = MH_Initialize();
     if (initStatus != MH_OK)
     {
@@ -170,9 +192,21 @@ bool hooks::Install()
     const std::uintptr_t aiGrannyFixedUpdate = ResolveAbsolute(rva::AIGrannyFixedUpdate);
     const std::uintptr_t aiGrannyFrozenEnemy = ResolveAbsolute(rva::AIGrannyFrozenEnemy);
 
-    logger::Info(std::string("Resolved MainMenu.Update address: 0x") + std::to_string(mainMenuUpdate));
-    logger::Info(std::string("Resolved AI_Granny.FixedUpdate address: 0x") + std::to_string(aiGrannyFixedUpdate));
-    logger::Info(std::string("Resolved AI_Granny.FrozenEnemy address: 0x") + std::to_string(aiGrannyFrozenEnemy));
+    {
+        std::ostringstream oss;
+        oss << "Resolved MainMenu.Update address: 0x" << std::hex << mainMenuUpdate;
+        logger::Info(oss.str());
+    }
+    {
+        std::ostringstream oss;
+        oss << "Resolved AI_Granny.FixedUpdate address: 0x" << std::hex << aiGrannyFixedUpdate;
+        logger::Info(oss.str());
+    }
+    {
+        std::ostringstream oss;
+        oss << "Resolved AI_Granny.FrozenEnemy address: 0x" << std::hex << aiGrannyFrozenEnemy;
+        logger::Info(oss.str());
+    }
 
     g_originalAIGrannyFrozenEnemy = reinterpret_cast<AIGrannyFrozenEnemyFn>(aiGrannyFrozenEnemy);
 

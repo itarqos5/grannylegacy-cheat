@@ -4,9 +4,29 @@
 #include "../util/Logger.h"
 
 #include <filesystem>
+#include <sstream>
+#include <vector>
 
 namespace
 {
+    LONG WINAPI CrashFilter(EXCEPTION_POINTERS* exceptionInfo)
+    {
+        if (exceptionInfo && exceptionInfo->ExceptionRecord)
+        {
+            std::ostringstream oss;
+            oss << "Unhandled exception code: 0x" << std::hex << exceptionInfo->ExceptionRecord->ExceptionCode;
+            logger::Error(oss.str());
+        }
+        else
+        {
+            logger::Error("Unhandled exception occurred");
+        }
+
+        logger::Warn("Process is crashing. Waiting 5 seconds before exit.");
+        Sleep(5000);
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
+
     std::filesystem::path GetModuleDirectory(const char* moduleName)
     {
         char modulePath[MAX_PATH] = {};
@@ -22,14 +42,34 @@ namespace
     void CopyResourceFolder()
     {
         const auto dllDir = GetModuleDirectory("hid.dll");
-        const auto sourceResources = dllDir / "resources";
+        const auto cwd = std::filesystem::current_path();
         const auto targetResources = std::filesystem::current_path() / "resources";
 
-        if (!std::filesystem::exists(sourceResources))
+        const std::vector<std::filesystem::path> candidates = {
+            dllDir / "resources",
+            cwd / "resources",
+            dllDir.parent_path() / "resources",
+            dllDir / "dist" / "resources",
+            cwd / "dist" / "resources"
+        };
+
+        std::filesystem::path sourceResources;
+        for (const auto& candidate : candidates)
         {
-            logger::Warn(std::string("Resource source folder not found: ") + sourceResources.string());
+            if (std::filesystem::exists(candidate) && std::filesystem::is_directory(candidate))
+            {
+                sourceResources = candidate;
+                break;
+            }
+        }
+
+        if (sourceResources.empty())
+        {
+            logger::Warn("Resource source folder not found in any expected location");
             return;
         }
+
+        logger::Info(std::string("Using resource source folder: ") + sourceResources.string());
 
         std::error_code ec;
         std::filesystem::create_directories(targetResources, ec);
@@ -73,6 +113,8 @@ DWORD WINAPI bootstrap::RuntimeThread(LPVOID)
 {
     logger::Initialize("hid.dll");
     logger::Info("Runtime thread started");
+    SetUnhandledExceptionFilter(CrashFilter);
+    logger::Info("Unhandled exception filter installed");
     logger::Info("Beginning resource synchronization");
     CopyResourceFolder();
     logger::Info("Resource synchronization complete");
