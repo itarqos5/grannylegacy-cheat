@@ -1,0 +1,1170 @@
+{
+  "Item Count / Durability": {
+    "BearTrapLogic.Start": {
+      "rva": "0x23F030",
+      "offset": "0x23DC30"
+    },
+    "BearTrapLogic.Update": {
+      "rva": "0x23F160",
+      "offset": "0x23DD60"
+    },
+    "BearTrapLogic.TimerDes": {
+      "rva": "0x23F100",
+      "offset": "0x23DD00"
+    },
+    "BearTrapLogic.TimerDesItem": {
+      "rva": "0x23F0A0",
+      "offset": "0x23DCA0"
+    },
+    "BearTrapLogic.OnTriggerEnter": {
+      "rva": "0x23E910",
+      "offset": "0x23D510"
+    },
+    "BearTrapLogic.ShootGun": {
+      "rva": "0x23EE80",
+      "offset": "0x23DA80"
+    },
+    "ChargingAnimHold.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "ChargingAnimHold.Update": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "ChargingAnimHold.StartCharge": {
+      "rva": "0x240CE0",
+      "offset": "0x23F8E0"
+    },
+    "ChargingAnimHold.StopCharge": {
+      "rva": "0x240CF0",
+      "offset": "0x23F8F0"
+    },
+    "ChargingAnimHold.GivePoints": {
+      "rva": "0x240B00",
+      "offset": "0x23F700"
+    },
+    "ChargingAnimHold.RayPickBaton": {
+      "rva": "0x240B90",
+      "offset": "0x23F790"
+    },
+    "ChargingAnimHold.PlayIt": {
+      "rva": "0x240B20",
+      "offset": "0x23F720"
+    },
+    "NoiseDropCheck.OnTriggerEnter": {
+      "rva": "0x267650",
+      "offset": "0x266250"
+    },
+    "HandlePuzzles.Start": {
+      "rva": "0x270A60",
+      "offset": "0x26F660"
+    },
+    "HandlePuzzles.Update": {
+      "rva": "0x270B60",
+      "offset": "0x26F760"
+    },
+    "HandlePuzzles.ScrewPlattaGoingDownSpiderCellar": {
+      "rva": "0x270990",
+      "offset": "0x26F590"
+    },
+    "HandlePuzzles.ScrewPanelSwitchDown": {
+      "rva": "0x270930",
+      "offset": "0x26F530"
+    },
+    "HandlePuzzles.MetalRustdown": {
+      "rva": "0x2701F0",
+      "offset": "0x26EDF0"
+    },
+    "HandlePuzzles.RechargeProcess": {
+      "rva": "0x2708D0",
+      "offset": "0x26F4D0"
+    },
+    "HandlePuzzles.UsePadlockKey2": {
+      "rva": "0x271C30",
+      "offset": "0x270830"
+    },
+    "HandlePuzzles.OpenPort": {
+      "rva": "0x270370",
+      "offset": "0x26EF70"
+    },
+    "HandlePuzzles.PlaceP1": {
+      "rva": "0x2705B0",
+      "offset": "0x26F1B0"
+    },
+    "HandlePuzzles.PlaceP2": {
+      "rva": "0x2705E0",
+      "offset": "0x26F1E0"
+    },
+    "HandlePuzzles.PlaceP3": {
+      "rva": "0x270610",
+      "offset": "0x26F210"
+    },
+    "HandlePuzzles.PlaceP4": {
+      "rva": "0x270640",
+      "offset": "0x26F240"
+    },
+    "HandlePuzzles.StartRecharging": {
+      "rva": "0x2709F0",
+      "offset": "0x26F5F0"
+    },
+    "HandlePuzzles.UseElecKey": {
+      "rva": "0x271B80",
+      "offset": "0x270780"
+    },
+    "HandlePuzzles.OpenRemote": {
+      "rva": "0x2703D0",
+      "offset": "0x26EFD0"
+    },
+    "HandlePuzzles.UseSparkplug": {
+      "rva": "0x271DF0",
+      "offset": "0x2709F0"
+    },
+    "HandlePuzzles.EnginePlace": {
+      "rva": "0x26FEA0",
+      "offset": "0x26EAA0"
+    },
+    "HandlePuzzles.CarBatteryPlace": {
+      "rva": "0x26FCB0",
+      "offset": "0x26E8B0"
+    },
+    "HandlePuzzles.PlaceUSB": {
+      "rva": "0x270740",
+      "offset": "0x26F340"
+    },
+    "HandlePuzzles.OpenTrunkCarKey": {
+      "rva": "0x270550",
+      "offset": "0x26F150"
+    },
+    "HandlePuzzles.PlacePlank": {
+      "rva": "0x270670",
+      "offset": "0x26F270"
+    },
+    "HandlePuzzles.UsePlayhouse": {
+      "rva": "0x271D20",
+      "offset": "0x270920"
+    },
+    "HandlePuzzles.UseSpecialKey": {
+      "rva": "0x271E30",
+      "offset": "0x270A30"
+    },
+    "HandlePuzzles.PlaceMelon": {
+      "rva": "0x270580",
+      "offset": "0x26F180"
+    },
+    "HandlePuzzles.CutAtticWires": {
+      "rva": "0x26FCF0",
+      "offset": "0x26E8F0"
+    },
+    "HandlePuzzles.UseWPKey": {
+      "rva": "0x271F80",
+      "offset": "0x270B80"
+    },
+    "HandlePuzzles.PullBookshelf": {
+      "rva": "0x2707E0",
+      "offset": "0x26F3E0"
+    },
+    "HandlePuzzles.OpenSafe": {
+      "rva": "0x2704A0",
+      "offset": "0x26F0A0"
+    },
+    "HandlePuzzles.PutBook": {
+      "rva": "0x270890",
+      "offset": "0x26F490"
+    },
+    "HandlePuzzles.MasterKeyUsed": {
+      "rva": "0x2701E0",
+      "offset": "0x26EDE0"
+    },
+    "HandlePuzzles.ExtremeUnlock": {
+      "rva": "0x26FEE0",
+      "offset": "0x26EAE0"
+    },
+    "HandlePuzzles.UseBattery": {
+      "rva": "0x271930",
+      "offset": "0x270530"
+    },
+    "HandlePuzzles.NoBattery": {
+      "rva": "0x270250",
+      "offset": "0x26EE50"
+    },
+    "HandlePuzzles.CuttingWire1": {
+      "rva": "0x26FDA0",
+      "offset": "0x26E9A0"
+    },
+    "HandlePuzzles.CuttingWire2": {
+      "rva": "0x26FE20",
+      "offset": "0x26EA20"
+    },
+    "HandlePuzzles.UseCode": {
+      "rva": "0x271AD0",
+      "offset": "0x2706D0"
+    },
+    "HandlePuzzles.UsePadlockKey": {
+      "rva": "0x271C90",
+      "offset": "0x270890"
+    },
+    "HandlePuzzles.HitPlankDoor": {
+      "rva": "0x270030",
+      "offset": "0x26EC30"
+    },
+    "HandlePuzzles.OpenIronDoors": {
+      "rva": "0x270300",
+      "offset": "0x26EF00"
+    },
+    "HandlePuzzles.WoodenStickPlaced": {
+      "rva": "0x272090",
+      "offset": "0x270C90"
+    },
+    "HandlePuzzles.CutChains": {
+      "rva": "0x26FD40",
+      "offset": "0x26E940"
+    },
+    "HandlePuzzles.UseRustyPadlock": {
+      "rva": "0x271DC0",
+      "offset": "0x2709C0"
+    },
+    "HandlePuzzles.OpenHatchSpiderCellar": {
+      "rva": "0x2702A0",
+      "offset": "0x26EEA0"
+    },
+    "HandlePuzzles.WheelCrankRotate": {
+      "rva": "0x272020",
+      "offset": "0x270C20"
+    },
+    "ItemSpawn.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "ItemSpawn.Update": {
+      "rva": "0x272C10",
+      "offset": "0x271810"
+    },
+    "ObjectsManager.Start": {
+      "rva": "0x290A90",
+      "offset": "0x28F690"
+    },
+    "ObjectsManager.Update": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "PickRay.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "PickRay.Update": {
+      "rva": "0x282780",
+      "offset": "0x281380"
+    },
+    "PickRay.PickShotgun": {
+      "rva": "0x27F430",
+      "offset": "0x27E030"
+    },
+    "PickRay.PickShooty": {
+      "rva": "0x27F2C0",
+      "offset": "0x27DEC0"
+    },
+    "PickRay.ShootGun1": {
+      "rva": "0x27F550",
+      "offset": "0x27E150"
+    },
+    "PickRay.ShootGun2": {
+      "rva": "0x280E40",
+      "offset": "0x27FA40"
+    },
+    "PickRay.HandleButtonClick": {
+      "rva": "0x27F1D0",
+      "offset": "0x27DDD0"
+    },
+    "PickRay.HandleButtonClick1": {
+      "rva": "0x27F1C0",
+      "offset": "0x27DDC0"
+    },
+    "PickRay.DeathAction": {
+      "rva": "0x27F0D0",
+      "offset": "0x27DCD0"
+    },
+    "PickRay.CheckItemDropping": {
+      "rva": "0x27B9E0",
+      "offset": "0x27A5E0"
+    },
+    "PickRay.StopSetOfTexts": {
+      "rva": "0x2826E0",
+      "offset": "0x2812E0"
+    },
+    "PickRay.TurnOffItemTexts": {
+      "rva": "0x282740",
+      "offset": "0x281340"
+    },
+    "PickRay.PickBaton": {
+      "rva": "0x27F1E0",
+      "offset": "0x27DDE0"
+    },
+    "WeightController.Start": {
+      "rva": "0x29E860",
+      "offset": "0x29D460"
+    },
+    "WeightController.Update": {
+      "rva": "0x29E910",
+      "offset": "0x29D510"
+    },
+    "WeightController.UpdateWeightText": {
+      "rva": "0x29E870",
+      "offset": "0x29D470"
+    },
+    "WeightController.OnTriggerEnter": {
+      "rva": "0x29C400",
+      "offset": "0x29B000"
+    },
+    "WeightController.OnTriggerExit": {
+      "rva": "0x29D0F0",
+      "offset": "0x29BCF0"
+    },
+    "WeightController.RevCrossbow": {
+      "rva": "0x29E140",
+      "offset": "0x29CD40"
+    },
+    "WeightController.RevAV": {
+      "rva": "0x29DDE0",
+      "offset": "0x29C9E0"
+    },
+    "WeightController.RevBA": {
+      "rva": "0x29DEA0",
+      "offset": "0x29CAA0"
+    },
+    "WeightController.RevGAS": {
+      "rva": "0x29E200",
+      "offset": "0x29CE00"
+    },
+    "WeightController.RevSEED": {
+      "rva": "0x29E500",
+      "offset": "0x29D100"
+    },
+    "WeightController.RevBOOK": {
+      "rva": "0x29DF00",
+      "offset": "0x29CB00"
+    },
+    "WeightController.RevBrun": {
+      "rva": "0x29DF60",
+      "offset": "0x29CB60"
+    },
+    "WeightController.RevCB": {
+      "rva": "0x29DFC0",
+      "offset": "0x29CBC0"
+    },
+    "WeightController.RevCC": {
+      "rva": "0x29E020",
+      "offset": "0x29CC20"
+    },
+    "WeightController.RevBATON": {
+      "rva": "0x29DE40",
+      "offset": "0x29CA40"
+    },
+    "WeightController.RevHA": {
+      "rva": "0x29E260",
+      "offset": "0x29CE60"
+    },
+    "WeightController.RevCG1": {
+      "rva": "0x29E080",
+      "offset": "0x29CC80"
+    },
+    "WeightController.RevCG2": {
+      "rva": "0x29E0E0",
+      "offset": "0x29CCE0"
+    },
+    "WeightController.RevSH1": {
+      "rva": "0x29E560",
+      "offset": "0x29D160"
+    },
+    "WeightController.RevSH2": {
+      "rva": "0x29E5C0",
+      "offset": "0x29D1C0"
+    },
+    "WeightController.RevS1": {
+      "rva": "0x29E380",
+      "offset": "0x29CF80"
+    },
+    "WeightController.RevME": {
+      "rva": "0x29E2C0",
+      "offset": "0x29CEC0"
+    },
+    "WeightController.RevSC": {
+      "rva": "0x29E4A0",
+      "offset": "0x29D0A0"
+    },
+    "WeightController.RevS2": {
+      "rva": "0x29E3E0",
+      "offset": "0x29CFE0"
+    },
+    "WeightController.RevS3": {
+      "rva": "0x29E440",
+      "offset": "0x29D040"
+    },
+    "WeightController.RevM": {
+      "rva": "0x29E320",
+      "offset": "0x29CF20"
+    },
+    "WeightController.RevEN": {
+      "rva": "0x29E1A0",
+      "offset": "0x29CDA0"
+    },
+    "WeightController.RevV1": {
+      "rva": "0x29E680",
+      "offset": "0x29D280"
+    },
+    "WeightController.RevV2": {
+      "rva": "0x29E6E0",
+      "offset": "0x29D2E0"
+    },
+    "WeightController.RevV3": {
+      "rva": "0x29E740",
+      "offset": "0x29D340"
+    },
+    "WeightController.RevWC": {
+      "rva": "0x29E7A0",
+      "offset": "0x29D3A0"
+    },
+    "WeightController.RevST": {
+      "rva": "0x29E620",
+      "offset": "0x29D220"
+    },
+    "WeightController.RevWR": {
+      "rva": "0x29E800",
+      "offset": "0x29D400"
+    }
+  },
+  "Player Health / Damage / Death": {
+    "BedHide.DisableDeath": {
+      "rva": "0x23F480",
+      "offset": "0x23E080"
+    },
+    "Days.NoiseObjectsKilled": {
+      "rva": "0x243DB0",
+      "offset": "0x2429B0"
+    },
+    "Days.KillRagdolls": {
+      "rva": "0x243B70",
+      "offset": "0x242770"
+    },
+    "AtticSpider.Dies": {
+      "rva": "0x2589E0",
+      "offset": "0x2575E0"
+    },
+    "AtticSpider.KilledSpider": {
+      "rva": "0x259140",
+      "offset": "0x257D40"
+    },
+    "AtticSpider.StingKill": {
+      "rva": "0x2594C0",
+      "offset": "0x2580C0"
+    },
+    "CrowManage.HurtDart": {
+      "rva": "0x25B8F0",
+      "offset": "0x25A4F0"
+    },
+    "CrowManage.KillAssBird": {
+      "rva": "0x25BA60",
+      "offset": "0x25A660"
+    },
+    "Freeze_Grandpa.KillAll": {
+      "rva": "0x263D10",
+      "offset": "0x262910"
+    },
+    "Freeze_Granny.KillAll": {
+      "rva": "0x2641B0",
+      "offset": "0x262DB0"
+    },
+    "P_hitGrandpa.HitAttempt": {
+      "rva": "0x267AC0",
+      "offset": "0x2666C0"
+    },
+    "P_hitGranny.HitAttempt": {
+      "rva": "0x267B00",
+      "offset": "0x266700"
+    },
+    "SaunaDeath.Update": {
+      "rva": "0x268B70",
+      "offset": "0x267770"
+    },
+    "SaunaDeath.OnTriggerStay": {
+      "rva": "0x268A90",
+      "offset": "0x267690"
+    },
+    "SaunaDeath.OnTriggerExit": {
+      "rva": "0x2689B0",
+      "offset": "0x2675B0"
+    },
+    "FanCollider.Hurt": {
+      "rva": "0x26DB70",
+      "offset": "0x26C770"
+    },
+    "Freezing.Start": {
+      "rva": "0x26EAB0",
+      "offset": "0x26D6B0"
+    },
+    "Freezing.Update": {
+      "rva": "0x26EB10",
+      "offset": "0x26D710"
+    },
+    "Freezing.OnTriggerStay": {
+      "rva": "0x26E1A0",
+      "offset": "0x26CDA0"
+    },
+    "Freezing.WaitRetagged": {
+      "rva": "0x26EB70",
+      "offset": "0x26D770"
+    },
+    "Gameovers.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "Gameovers.Update": {
+      "rva": "0x26F010",
+      "offset": "0x26DC10"
+    },
+    "Gameovers.GameOverCall": {
+      "rva": "0x26ECA0",
+      "offset": "0x26D8A0"
+    },
+    "Gameovers.EndProcess": {
+      "rva": "0x26EC30",
+      "offset": "0x26D830"
+    },
+    "Gameovers.EndOver": {
+      "rva": "0x26EBD0",
+      "offset": "0x26D7D0"
+    },
+    "Gameovers.GameOverStart": {
+      "rva": "0x26EFB0",
+      "offset": "0x26DBB0"
+    },
+    "GrannyPlankKill.OnTriggerEnter": {
+      "rva": "0x26F830",
+      "offset": "0x26E430"
+    },
+    "PlayerStatus.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "PlayerStatus.Update": {
+      "rva": "0x2947A0",
+      "offset": "0x2933A0"
+    },
+    "PlayerStatus.PlayerGettingStopped": {
+      "rva": "0x294630",
+      "offset": "0x293230"
+    },
+    "PlayerStatus.DamageFeet": {
+      "rva": "0x293570",
+      "offset": "0x292170"
+    },
+    "PlayerStatus.DamageSpider": {
+      "rva": "0x293610",
+      "offset": "0x292210"
+    },
+    "PlayerStatus.MomDeath": {
+      "rva": "0x293EC0",
+      "offset": "0x292AC0"
+    },
+    "PlayerStatus.MomDeathCount": {
+      "rva": "0x293E60",
+      "offset": "0x292A60"
+    },
+    "PlayerStatus.GrannyCaughtYou": {
+      "rva": "0x293960",
+      "offset": "0x292560"
+    },
+    "PlayerStatus.GrannyCaughtYouBed": {
+      "rva": "0x293880",
+      "offset": "0x292480"
+    },
+    "PlayerStatus.GrandpaCaughtYou": {
+      "rva": "0x293800",
+      "offset": "0x292400"
+    },
+    "PlayerStatus.GrandpaCaughtYouBed": {
+      "rva": "0x293720",
+      "offset": "0x292320"
+    },
+    "PlayerStatus.KnockDeath": {
+      "rva": "0x2939E0",
+      "offset": "0x2925E0"
+    },
+    "PlayerStatus.NormalDeath": {
+      "rva": "0x2941B0",
+      "offset": "0x292DB0"
+    },
+    "PlayerStatus.DeathCount": {
+      "rva": "0x2936C0",
+      "offset": "0x2922C0"
+    },
+    "PlayerStatus.DeathCountBed": {
+      "rva": "0x293650",
+      "offset": "0x292250"
+    },
+    "Poisoning.OnTriggerEnter": {
+      "rva": "0x294D60",
+      "offset": "0x293960"
+    },
+    "RagdollPL.Start": {
+      "rva": "0x2961E0",
+      "offset": "0x294DE0"
+    },
+    "RagdollPL.LookAt": {
+      "rva": "0x295C70",
+      "offset": "0x294870"
+    },
+    "RagdollPL.Update": {
+      "rva": "0x2967C0",
+      "offset": "0x2953C0"
+    },
+    "RagdollPL.OnTriggerEnter": {
+      "rva": "0x295D70",
+      "offset": "0x294970"
+    },
+    "RagdollPL.DestroyTimer": {
+      "rva": "0x295C10",
+      "offset": "0x294810"
+    },
+    "RagdollPL.PlayRandomSound": {
+      "rva": "0x296140",
+      "offset": "0x294D40"
+    },
+    "ScreenEffects.FanHurt": {
+      "rva": "0x297860",
+      "offset": "0x296460"
+    },
+    "TrapPoison.Waiter": {
+      "rva": "0x299D40",
+      "offset": "0x298940"
+    },
+    "TrapPoison.OnTriggerEnter": {
+      "rva": "0x2998F0",
+      "offset": "0x2984F0"
+    }
+  },
+  "AI Detection": {
+    "CarSensor.OnTriggerEnter": {
+      "rva": "0x2407C0",
+      "offset": "0x23F3C0"
+    },
+    "AI_Grandpa.Start": {
+      "rva": "0x252BD0",
+      "offset": "0x2517D0"
+    },
+    "AI_Grandpa.FixedUpdate": {
+      "rva": "0x24ECC0",
+      "offset": "0x24D8C0"
+    },
+    "AI_Grandpa.DeadDisable": {
+      "rva": "0x24EBD0",
+      "offset": "0x24D7D0"
+    },
+    "AI_Grandpa.StopAI": {
+      "rva": "0x252F30",
+      "offset": "0x251B30"
+    },
+    "AI_Grandpa.ResetAIDecision": {
+      "rva": "0x252600",
+      "offset": "0x251200"
+    },
+    "AI_Grandpa.ShootDart": {
+      "rva": "0x252940",
+      "offset": "0x251540"
+    },
+    "AI_Grandpa.FrozenEnemy": {
+      "rva": "0x251E70",
+      "offset": "0x250A70"
+    },
+    "AI_Grandpa.PepperHit": {
+      "rva": "0x2523F0",
+      "offset": "0x250FF0"
+    },
+    "AI_Grandpa.PepperedTimer": {
+      "rva": "0x2525A0",
+      "offset": "0x2511A0"
+    },
+    "AI_Grandpa.ShotgunFinishShot": {
+      "rva": "0x252AA0",
+      "offset": "0x2516A0"
+    },
+    "AI_Grandpa.FreezeProcess": {
+      "rva": "0x251E10",
+      "offset": "0x250A10"
+    },
+    "AI_Grandpa.DartProcess": {
+      "rva": "0x24EB70",
+      "offset": "0x24D770"
+    },
+    "AI_Grandpa.SensorPlayer": {
+      "rva": "0x2526A0",
+      "offset": "0x2512A0"
+    },
+    "AI_Grandpa.ChaseAction": {
+      "rva": "0x24EA80",
+      "offset": "0x24D680"
+    },
+    "AI_Grandpa.StopChase": {
+      "rva": "0x253060",
+      "offset": "0x251C60"
+    },
+    "AI_Grandpa.LookAtThings": {
+      "rva": "0x251FD0",
+      "offset": "0x250BD0"
+    },
+    "AI_Grandpa.SpeakEnemy": {
+      "rva": "0x252B60",
+      "offset": "0x251760"
+    },
+    "AI_Grandpa.MurderNoiseObjs": {
+      "rva": "0x252170",
+      "offset": "0x250D70"
+    },
+    "AI_Grandpa.ResetCertainTimer": {
+      "rva": "0x252690",
+      "offset": "0x251290"
+    },
+    "AI_Grandpa.ChooseWaypoint": {
+      "rva": "0x24EAB0",
+      "offset": "0x24D6B0"
+    },
+    "AI_Grandpa.SmackTimer": {
+      "rva": "0x252B00",
+      "offset": "0x251700"
+    },
+    "AI_Grandpa.OnTriggerStay": {
+      "rva": "0x2522E0",
+      "offset": "0x250EE0"
+    },
+    "AI_Grandpa.OnTriggerExit": {
+      "rva": "0x252260",
+      "offset": "0x250E60"
+    },
+    "AI_Granny.Start": {
+      "rva": "0x256D20",
+      "offset": "0x255920"
+    },
+    "AI_Granny.FixedUpdate": {
+      "rva": "0x253450",
+      "offset": "0x252050"
+    },
+    "AI_Granny.DeadDisable": {
+      "rva": "0x253360",
+      "offset": "0x251F60"
+    },
+    "AI_Granny.StopAI": {
+      "rva": "0x256E60",
+      "offset": "0x255A60"
+    },
+    "AI_Granny.ResetAIDecision": {
+      "rva": "0x2567A0",
+      "offset": "0x2553A0"
+    },
+    "AI_Granny.ShootDart": {
+      "rva": "0x256AF0",
+      "offset": "0x2556F0"
+    },
+    "AI_Granny.FrozenEnemy": {
+      "rva": "0x256240",
+      "offset": "0x254E40"
+    },
+    "AI_Granny.PepperHit": {
+      "rva": "0x256590",
+      "offset": "0x255190"
+    },
+    "AI_Granny.PepperedTimer": {
+      "rva": "0x256740",
+      "offset": "0x255340"
+    },
+    "AI_Granny.FreezeProcess": {
+      "rva": "0x2561E0",
+      "offset": "0x254DE0"
+    },
+    "AI_Granny.DartProcess": {
+      "rva": "0x253300",
+      "offset": "0x251F00"
+    },
+    "AI_Granny.SensorPlayer": {
+      "rva": "0x256840",
+      "offset": "0x255440"
+    },
+    "AI_Granny.ChaseAction": {
+      "rva": "0x253230",
+      "offset": "0x251E30"
+    },
+    "AI_Granny.StopChase": {
+      "rva": "0x256F80",
+      "offset": "0x255B80"
+    },
+    "AI_Granny.LookAtThings": {
+      "rva": "0x251FD0",
+      "offset": "0x250BD0"
+    },
+    "AI_Granny.SpeakEnemy": {
+      "rva": "0x256CB0",
+      "offset": "0x2558B0"
+    },
+    "AI_Granny.MurderNoiseObjs": {
+      "rva": "0x2563A0",
+      "offset": "0x254FA0"
+    },
+    "AI_Granny.ResetCertainTimer": {
+      "rva": "0x256830",
+      "offset": "0x255430"
+    },
+    "AI_Granny.ChooseWaypoint": {
+      "rva": "0x253260",
+      "offset": "0x251E60"
+    },
+    "AI_Granny.SmackTimer": {
+      "rva": "0x256C50",
+      "offset": "0x255850"
+    },
+    "AI_Granny.OnTriggerStay": {
+      "rva": "0x256510",
+      "offset": "0x255110"
+    },
+    "AI_Granny.OnTriggerExit": {
+      "rva": "0x256490",
+      "offset": "0x255090"
+    },
+    "AI_MomSpider.Start": {
+      "rva": "0x257840",
+      "offset": "0x256440"
+    },
+    "AI_MomSpider.Update": {
+      "rva": "0x257A50",
+      "offset": "0x256650"
+    },
+    "AI_MomSpider.MomCaughtPlayer": {
+      "rva": "0x257420",
+      "offset": "0x256020"
+    },
+    "AI_MomSpider.ResetEntireThing": {
+      "rva": "0x2577E0",
+      "offset": "0x2563E0"
+    },
+    "AI_MomSpider.HitMom": {
+      "rva": "0x2572F0",
+      "offset": "0x255EF0"
+    },
+    "AI_MomSpider.MomHit": {
+      "rva": "0x257680",
+      "offset": "0x256280"
+    },
+    "AI_MomSpider.ChaseAction": {
+      "rva": "0x2571D0",
+      "offset": "0x255DD0"
+    },
+    "AI_MomSpider.StopChase": {
+      "rva": "0x257990",
+      "offset": "0x256590"
+    },
+    "AI_MomSpider.ChooseWaypoint": {
+      "rva": "0x257250",
+      "offset": "0x255E50"
+    },
+    "AI_MomSpider.OnTriggerStay": {
+      "rva": "0x257760",
+      "offset": "0x256360"
+    },
+    "AI_MomSpider.OnTriggerExit": {
+      "rva": "0x2576E0",
+      "offset": "0x2562E0"
+    },
+    "AI_MomSpider.AddNewNav": {
+      "rva": "0x257140",
+      "offset": "0x255D40"
+    },
+    "BlindSensor_Grandpa.OnTriggerStay": {
+      "rva": "0x25B3B0",
+      "offset": "0x259FB0"
+    },
+    "BlindSensor_Granny.OnTriggerStay": {
+      "rva": "0x25B440",
+      "offset": "0x25A040"
+    },
+    "EnemyFootstep.Start": {
+      "rva": "0x260460",
+      "offset": "0x25F060"
+    },
+    "EnemyFootstep.Update": {
+      "rva": "0x260470",
+      "offset": "0x25F070"
+    },
+    "EnemyFootstep.SoundEffectStep": {
+      "rva": "0x2603A0",
+      "offset": "0x25EFA0"
+    },
+    "Eyes_Grandpa.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "Eyes_Grandpa.FixedUpdate": {
+      "rva": "0x262CA0",
+      "offset": "0x2618A0"
+    },
+    "Eyes_Granny.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "Eyes_Granny.FixedUpdate": {
+      "rva": "0x263330",
+      "offset": "0x261F30"
+    },
+    "Eyes_MomSpider.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "Eyes_MomSpider.FixedUpdate": {
+      "rva": "0x263870",
+      "offset": "0x262470"
+    },
+    "EnemyController.Start": {
+      "rva": "0x25FEB0",
+      "offset": "0x25EAB0"
+    },
+    "EnemyController.Update": {
+      "rva": "0x260110",
+      "offset": "0x25ED10"
+    },
+    "EnemyController.GrannyFrozeDeath": {
+      "rva": "0x25E740",
+      "offset": "0x25D340"
+    },
+    "EnemyController.GrannyDeath": {
+      "rva": "0x25E1D0",
+      "offset": "0x25CDD0"
+    },
+    "EnemyController.GrannyDeathS": {
+      "rva": "0x25DCA0",
+      "offset": "0x25C8A0"
+    },
+    "EnemyController.GrandpaFrozeDeath": {
+      "rva": "0x25D6F0",
+      "offset": "0x25C2F0"
+    },
+    "EnemyController.GrandpaDeath": {
+      "rva": "0x25D180",
+      "offset": "0x25BD80"
+    },
+    "EnemyController.GrandpaDeathS": {
+      "rva": "0x25CC40",
+      "offset": "0x25B840"
+    },
+    "EnemyController.GrandpaDeathSBed": {
+      "rva": "0x25C6F0",
+      "offset": "0x25B2F0"
+    },
+    "EnemyController.MurderNoise1": {
+      "rva": "0x25EEA0",
+      "offset": "0x25DAA0"
+    },
+    "EnemyController.MurderNoise2": {
+      "rva": "0x25EFA0",
+      "offset": "0x25DBA0"
+    },
+    "EnemyController.EnemyRearrange": {
+      "rva": "0x25C540",
+      "offset": "0x25B140"
+    },
+    "EnemyController.SpawnGranny": {
+      "rva": "0x25F7D0",
+      "offset": "0x25E3D0"
+    },
+    "EnemyController.SpawnGrandpa": {
+      "rva": "0x25F110",
+      "offset": "0x25DD10"
+    },
+    "EnemyController.GrandpaySleep": {
+      "rva": "0x25DC60",
+      "offset": "0x25C860"
+    },
+    "EnemyController.CrawlFaster": {
+      "rva": "0x25C450",
+      "offset": "0x25B050"
+    },
+    "EnemyController.StartCrawlingMom": {
+      "rva": "0x25FE60",
+      "offset": "0x25EA60"
+    },
+    "EnemyController.MomShoot": {
+      "rva": "0x25EE30",
+      "offset": "0x25DA30"
+    },
+    "EnemyController.MomFroze": {
+      "rva": "0x25ED70",
+      "offset": "0x25D970"
+    },
+    "EnemyController.TimerFreeze": {
+      "rva": "0x2600B0",
+      "offset": "0x25ECB0"
+    },
+    "EnemyController.NavOBSDisable": {
+      "rva": "0x25F0A0",
+      "offset": "0x25DCA0"
+    },
+    "EnemyController.MomFreed": {
+      "rva": "0x25ECB0",
+      "offset": "0x25D8B0"
+    },
+    "SpiderAggro.OnTriggerStay": {
+      "rva": "0x2989E0",
+      "offset": "0x2975E0"
+    }
+  },
+  "Movement Speed / Gravity": {
+    "CrouchHolder.Start": {
+      "rva": "0x242360",
+      "offset": "0x240F60"
+    },
+    "CrouchHolder.Update": {
+      "rva": "0x2424E0",
+      "offset": "0x2410E0"
+    },
+    "CrouchHolder.CheckForObstaclesAbove": {
+      "rva": "0x241E60",
+      "offset": "0x240A60"
+    },
+    "CrouchHolder.WhichFloor": {
+      "rva": "0x242CE0",
+      "offset": "0x2418E0"
+    },
+    "CrouchHolder.StartCrouch": {
+      "rva": "0x242270",
+      "offset": "0x240E70"
+    },
+    "CrouchHolder.StopCrouch": {
+      "rva": "0x2423B0",
+      "offset": "0x240FB0"
+    },
+    "CrouchHolder.CrouchStopJumpscare": {
+      "rva": "0x242090",
+      "offset": "0x240C90"
+    },
+    "CrouchHolder.Crouch": {
+      "rva": "0x2421B0",
+      "offset": "0x240DB0"
+    },
+    "CrouchHolder.Stand": {
+      "rva": "0x242210",
+      "offset": "0x240E10"
+    },
+    "FallingHolder.Update": {
+      "rva": "0x26D750",
+      "offset": "0x26C350"
+    },
+    "FallingHolder.CheckForLanding": {
+      "rva": "0x26D3C0",
+      "offset": "0x26BFC0"
+    },
+    "FallingHolder.Da": {
+      "rva": "0x26D520",
+      "offset": "0x26C120"
+    },
+    "FallingHolder.HandleLanding": {
+      "rva": "0x26D560",
+      "offset": "0x26C160"
+    },
+    "FallingHolder.WaitForAnimationEnd": {
+      "rva": "0x26DA70",
+      "offset": "0x26C670"
+    },
+    "FallingHolder.TestStop": {
+      "rva": "0x26D6E0",
+      "offset": "0x26C2E0"
+    },
+    "MobileFPS.Start": {
+      "rva": "0x28FEB0",
+      "offset": "0x28EAB0"
+    },
+    "MobileFPS.Awake": {
+      "rva": "0x28F550",
+      "offset": "0x28E150"
+    },
+    "MobileFPS.Update": {
+      "rva": "0x28FF20",
+      "offset": "0x28EB20"
+    },
+    "MobileFPS.GetTouchInput": {
+      "rva": "0x28F5B0",
+      "offset": "0x28E1B0"
+    },
+    "MobileFPS.HandlePlayerMovement": {
+      "rva": "0x28F890",
+      "offset": "0x28E490"
+    },
+    "MobileFPS.ApplyFinalMovements": {
+      "rva": "0x28F4A0",
+      "offset": "0x28E0A0"
+    },
+    "MobileFPS.HandleVerticalMovement": {
+      "rva": "0x28FB80",
+      "offset": "0x28E780"
+    },
+    "MobileFPS.AdjustSpeed": {
+      "rva": "0x28F490",
+      "offset": "0x28E090"
+    },
+    "MobileFPS.ReserRotation": {
+      "rva": "0x28FDF0",
+      "offset": "0x28E9F0"
+    },
+    "MobileFPS.Waiter2": {
+      "rva": "0x290780",
+      "offset": "0x28F380"
+    },
+    "MobileFPS.ResetRotation": {
+      "rva": "0x28FE00",
+      "offset": "0x28EA00"
+    },
+    "MobileFPS.OnControllerColliderHit": {
+      "rva": "0x28FCA0",
+      "offset": "0x28E8A0"
+    },
+    "SprintRemovesItself.DropSprint": {
+      "rva": "0x2994B0",
+      "offset": "0x2980B0"
+    },
+    "WindowJumping.Start": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "WindowJumping.Update": {
+      "rva": "0x23D7F0",
+      "offset": "0x23C3F0"
+    },
+    "WindowJumping.JumpOutside": {
+      "rva": "0x2B09F0",
+      "offset": "0x2AF5F0"
+    },
+    "WindowJumping.GoingOutside": {
+      "rva": "0x2B0640",
+      "offset": "0x2AF240"
+    },
+    "WindowJumping.JumpInside": {
+      "rva": "0x2B06A0",
+      "offset": "0x2AF2A0"
+    },
+    "WindowJumping.GoingInside": {
+      "rva": "0x2B05E0",
+      "offset": "0x2AF1E0"
+    },
+    "CameraController.Awake": {
+      "rva": "0x2A0060",
+      "offset": "0x29EC60"
+    },
+    "CameraController.Start": {
+      "rva": "0x2A1030",
+      "offset": "0x29FC30"
+    },
+    "CameraController.LateUpdate": {
+      "rva": "0x2A0B10",
+      "offset": "0x29F710"
+    },
+    "CameraController.GetPlayerInput": {
+      "rva": "0x2A0130",
+      "offset": "0x29ED30"
+    }
+  }
+}
